@@ -13,7 +13,7 @@ if __name__ == "__main__":
     context = Context()
     context.config = config
     logger = log.setup_log(config.output_folder)
-    status.out_status(0)
+    status.out_status(0, output_folder=config.output_folder)
     st = time.time()
     try:
 
@@ -34,10 +34,10 @@ if __name__ == "__main__":
         logging.info("success")
         logging.info("Total running time: {}".format(time.time() - st))
 
-        status.out_status(1)
+        status.out_status(1, output_folder=config.output_folder)
 
     except Exception as e:
         logging.exception(e)
         logging.error("fail")
         logging.info("Total running time: {}".format(time.time() - st))
-        status.out_status(-1)
+        status.out_status(-1, output_folder=config.output_folder)
