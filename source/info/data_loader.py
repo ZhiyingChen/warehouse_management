@@ -9,16 +9,22 @@ input_data = InputData()
 
 
 class DataLoader:
-    def __init__(self):
-        pass
+    def __init__(
+            self,
+            param_file_dict: dict = None
+    ):
+        self.param_file_dict = param_file_dict
 
-    @staticmethod
-    def generate_global_parameter(context: Context):
+
+    def generate_global_parameter(self, context: Context):
         gph = field.GlobalParamHeader
         gpf = field.GlobalParameterField
 
-        global_param_df = pd.read_csv("{}{}".format(context.config.input_folder, file.GLOBAL_PARAM_FILE),
+        if context.config.load_from_file:
+            global_param_df = pd.read_csv("{}{}".format(context.config.input_folder, file.GLOBAL_PARAM_FILE),
                                       dtype={gph.name: str, gph.value: float})
+        else:
+            global_param_df = self.param_file_dict[file.GLOBAL_PARAM_FILE]
 
         global_param_dict = dict(zip(global_param_df[gph.name], global_param_df[gph.value]))
         global_parameter = do.GlobalParameter(
@@ -36,11 +42,15 @@ class DataLoader:
         input_data.global_parameter = global_parameter
         logging.info("successfully loaded global parameter.")
 
-    @staticmethod
-    def generate_demand_city_dict(context: Context):
+
+    def generate_demand_city_dict(self, context: Context):
         ddh = field.DemandDistributionHeader
-        demand_city_df = pd.read_csv("{}{}".format(context.config.input_folder, file.DEMAND_FILE),
-                                     dtype={ddh.demand_city: str, ddh.demand_qty: float})
+
+        if context.config.load_from_file:
+            demand_city_df = pd.read_csv("{}{}".format(context.config.input_folder, file.DEMAND_FILE),
+                                         dtype={ddh.demand_city: str, ddh.demand_qty: float})
+        else:
+            demand_city_df = self.param_file_dict[file.DEMAND_FILE]
 
         demand_city_dict = dict()
         for idx, row in demand_city_df.iterrows():
@@ -50,11 +60,15 @@ class DataLoader:
         input_data.demand_city_dict = demand_city_dict
         logging.info("successfully loaded demand_city_dict: {}".format(len(input_data.demand_city_dict)))
 
-    @staticmethod
-    def generate_distance_info(context: Context):
+    def generate_distance_info(self, context: Context):
         dh = field.DistanceHeader
-        distance_df = pd.read_csv("{}{}".format(context.config.input_folder, file.DISTANCE_FILE),
+
+        if context.config.load_from_file:
+            distance_df = pd.read_csv("{}{}".format(context.config.input_folder, file.DISTANCE_FILE),
                                   dtype={dh.demand_city: str, dh.supply_city: str, dh.distance: float, dh.time: float})
+        else:
+            distance_df = self.param_file_dict[file.DISTANCE_FILE]
+
         distance_dict = dict()
         supply_city_dict = dict()
         for idx, row in distance_df.iterrows():

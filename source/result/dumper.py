@@ -29,9 +29,12 @@ class ResultDumper:
             record_lt.append(record)
 
         supply_city_out_df = pd.DataFrame(record_lt, columns=col)
-        supply_city_out_df.to_csv('{}{}'.format(context.config.output_folder, file.OUT_SUPPLY_CITY_FILE),
-                                  index=False,
-                                  encoding='gbk')
+
+        if context.config.load_from_file:
+            supply_city_out_df.to_csv('{}{}'.format(context.config.output_folder, file.OUT_SUPPLY_CITY_FILE),
+                                      index=False,
+                                      encoding='gbk')
+        return supply_city_out_df
 
     @staticmethod
     def generate_demand_city_out_file(context: Context):
@@ -54,8 +57,11 @@ class ResultDumper:
             record_lt.append(record)
 
         demand_city_out_df = pd.DataFrame(record_lt, columns=col)
-        demand_city_out_df.to_csv("{}{}".format(context.config.output_folder, file.OUT_DEMAND_CITY_FILE), index=False,
-                                  encoding="gbk")
+
+        if context.config.load_from_file:
+            demand_city_out_df.to_csv("{}{}".format(context.config.output_folder, file.OUT_DEMAND_CITY_FILE), index=False,
+                                      encoding="gbk")
+        return demand_city_out_df
 
     @staticmethod
     def generate_kpi_file(context: Context):
@@ -107,9 +113,19 @@ class ResultDumper:
         record_lt.append(record)
 
         kpi_df = pd.DataFrame(record_lt, columns=col)
-        kpi_df.to_csv("{}{}".format(context.config.output_folder, file.OUT_KPI_FILE), index=False, encoding="gbk")
+
+        if context.config.load_from_file:
+            kpi_df.to_csv("{}{}".format(context.config.output_folder, file.OUT_KPI_FILE), index=False, encoding="gbk")
+        return kpi_df
 
     def generate_all_files(self, context: Context):
-        self.generate_demand_city_out_file(context=context)
-        self.generate_supply_city_out_file(context=context)
-        self.generate_kpi_file(context=context)
+        demand_city_out_df = self.generate_demand_city_out_file(context=context)
+        supply_city_out_df = self.generate_supply_city_out_file(context=context)
+        kpi_df = self.generate_kpi_file(context=context)
+
+        result_dict = {
+            file.OUT_SUPPLY_CITY_FILE: supply_city_out_df,
+            file.OUT_DEMAND_CITY_FILE: demand_city_out_df,
+            file.OUT_KPI_FILE: kpi_df
+        }
+        return result_dict

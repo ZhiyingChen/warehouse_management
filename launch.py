@@ -29,7 +29,7 @@ if __name__ == "__main__":
         result_processor.generate_results(context=context)
 
         result_dumper = ResultDumper()
-        result_dumper.generate_all_files(context=context)
+        result_file_dict = result_dumper.generate_all_files(context=context)
 
         logging.info("success")
         logging.info("Total running time: {}".format(time.time() - st))
