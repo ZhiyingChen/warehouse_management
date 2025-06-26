@@ -11,8 +11,8 @@ class ModelManager:
     def __init__(self):
         self.generated_vars = set()
         self.model = pe.ConcreteModel("Warehouse Management")
-        self.opt = pe.SolverFactory("cplex_persistent")
-        self.api_mode = True
+        self.opt = pe.SolverFactory("glpk")
+        self.api_mode = False
         self.output_lp_file = False
 
     def create_sets(self, context: Context):
@@ -201,10 +201,9 @@ class ModelManager:
                                  options=self.model.options)
 
         else:
-            res = self.opt.solve(self.model, tee=True, logfile=log_file, warmstart=True,
-                                 options=self.model.options)
+            res = self.opt.solve(self.model, tee=True, logfile=log_file, options=self.model.options)
 
-        self.log_opt_solve_info(log_file=log_file)
+        # self.log_opt_solve_info(log_file=log_file)
         if res.solver.status in [pe.SolverStatus.ok, pe.SolverStatus.aborted]:
             return True
         else:
@@ -255,7 +254,9 @@ class ModelManager:
         self.create_warehouse_stock_limit_constr(context=context)
         self.create_not_exceed_demand_constr(context=context)
         self.create_not_exceed_stock_constr()
-        self.opt.set_instance(self.model)
+
+        if self.api_mode:
+            self.opt.set_instance(self.model)
 
     def solve_all_objectives(self, context: Context):
         self.solve_cost_obj(context=context)
