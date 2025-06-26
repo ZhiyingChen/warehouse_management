@@ -10,6 +10,9 @@ class DistanceHeader:
     distance = '距离（公里）'
     time = '时间（小时）'
 
+class SupplyCityHeader:
+    supply_city = '城市'
+
 
 class DemandDistributionHeader:
     demand_city = '城市'

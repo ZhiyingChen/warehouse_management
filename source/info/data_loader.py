@@ -60,6 +60,23 @@ class DataLoader:
         input_data.demand_city_dict = demand_city_dict
         logging.info("successfully loaded demand_city_dict: {}".format(len(input_data.demand_city_dict)))
 
+    def generate_supply_city_dict(self, context: Context):
+        sch = field.SupplyCityHeader
+
+        if context.config.load_from_file:
+            supply_city_df = pd.read_csv("{}{}".format(context.config.input_folder, file.SUPPLY_FILE))
+        else:
+            supply_city_df = self.param_file_dict[file.SUPPLY_FILE]
+
+        supply_city_dict = dict()
+
+        for idx, row in supply_city_df.iterrows():
+            supply_city = do.SupplyCity(city_name=row[sch.supply_city])
+            supply_city_dict[supply_city.city_name] = supply_city
+
+        input_data.supply_city_dict = supply_city_dict
+        logging.info("successfully loaded supply_city_dict: {}".format(len(input_data.supply_city_dict)))
+
     def generate_distance_info(self, context: Context):
         dh = field.DistanceHeader
 
@@ -70,7 +87,6 @@ class DataLoader:
             distance_df = self.param_file_dict[file.DISTANCE_FILE]
 
         distance_dict = dict()
-        supply_city_dict = dict()
         for idx, row in distance_df.iterrows():
             distance = do.Distance(demand_city=row[dh.demand_city],
                                    supply_city=row[dh.supply_city],
@@ -78,16 +94,13 @@ class DataLoader:
                                    transport_hour=row[dh.time])
             distance_dict[(distance.demand_city, distance.supply_city)] = distance
 
-            supply_city = do.SupplyCity(city_name=row[dh.supply_city])
-            supply_city_dict[supply_city.city_name] = supply_city
 
         input_data.distance_dict = distance_dict
-        input_data.supply_city_dict = supply_city_dict
-        logging.info("successfully loaded supply_city_dict: {}".format(len(input_data.supply_city_dict)))
         logging.info("successfully loaded distance_dict: {}".format(len(input_data.distance_dict)))
 
     def generate_data(self, context: Context):
         self.generate_global_parameter(context=context)
         self.generate_demand_city_dict(context=context)
+        self.generate_supply_city_dict(context=context)
         self.generate_distance_info(context=context)
         context.input_data = input_data
