@@ -201,7 +201,7 @@ class ModelManager:
                                  options=self.model.options)
 
         else:
-            res = self.opt.solve(self.model, tee=True, logfile=log_file, options=self.model.options)
+            res = self.opt.solve(self.model, tee=True, options=self.model.options)
 
         # self.log_opt_solve_info(log_file=log_file)
         if res.solver.status in [pe.SolverStatus.ok, pe.SolverStatus.aborted]:
