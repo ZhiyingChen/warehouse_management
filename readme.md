@@ -1,3 +1,14 @@
+---
+title: Warehouse Management
+emoji: 🧩
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+sdk_version: "1.33.0"
+app_file: app.py
+pinned: false
+---
+
 # Warehouse Management
 **Problem Statement**
 
