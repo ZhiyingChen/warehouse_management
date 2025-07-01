@@ -58,7 +58,6 @@ with st.expander("📥 输入文件说明：供应城市.csv"):
     st.table(df_supply)
 
 with st.expander("📥 输入文件说明：距离数据.csv"):
-
     df_distance = pd.DataFrame([
         ["城市1", "str", "起始城市"],
         ["城市2", "str", "目标城市"],
@@ -90,7 +89,6 @@ with st.expander("📊 输出文件说明：指标输出.csv"):
     st.table(df_kpi_enum)
 
 with st.expander("📊 输出文件说明：构建仓库的城市输出.csv"):
-
     df_warehouse = pd.DataFrame([
         ["城市", "str", "建仓城市名称"],
         ["库存水平", "double", "仓库的库存数量"],
@@ -108,13 +106,14 @@ with st.expander("📊 输出文件说明：需求城市满足情况输出.csv")
     ], columns=["字段名称", "类型", "描述"])
     st.table(df_fulfill)
 
-
 # 示例数据展示
 st.header("📄 示例输入数据（可编辑）")
+
 
 @st.cache_data
 def load_csv(file):
     return pd.read_csv(file)
+
 
 # 加载示例数据
 global_df = load_csv("data/全局参数.csv")
@@ -163,7 +162,6 @@ with st.expander("📝 编辑距离数据"):
         mime="text/csv"
     )
 
-
 # 显示运行按钮
 if st.button("🚀 运行算法"):
     with st.spinner("算法运行中，请稍候..."):
@@ -177,7 +175,7 @@ if st.button("🚀 运行算法"):
         try:
 
             data_loader = DataLoader(
-                param_file_dict = {
+                param_file_dict={
                     "全局参数.csv": edited_global_df,
                     "需求分布.csv": edited_demand_df,
                     "供应城市.csv": edited_supply_df,
@@ -197,18 +195,15 @@ if st.button("🚀 运行算法"):
             result_dumper = ResultDumper()
             result_file_dict = result_dumper.generate_all_files(context=context)
 
-
             st.success(
                 "✅ 算法运行完成！共{}秒。".format(round(time.time() - st_time))
-                       )
+            )
 
         except Exception as e:
             st.error(f"❌ 算法运行出错：{e}")
 
     st.markdown("---")
     st.header("📊 输出结果")
-
-
 
     # 展示输出文件
     for filename, df in result_file_dict.items():

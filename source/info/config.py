@@ -5,4 +5,4 @@ class Config:
     ):
         self.load_from_file = load_from_file
         self.input_folder = './'
-        self.output_folder = 'output/'
+        self.output_folder = './output/'
