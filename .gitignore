@@ -1,0 +1,5 @@
+dataSets/
+.idea/
+__pycache__/
+*.log
+output/

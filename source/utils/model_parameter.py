@@ -1,0 +1,2 @@
+COST_OBJ_CPLEX_PARAM = {'mipgap': 0.01, 'tmlim': 60}
+COST_OBJ_CPLEX_SLACK = 0.1

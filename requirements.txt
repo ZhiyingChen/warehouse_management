@@ -1,3 +1,4 @@
-altair
-pandas
-streamlit
+pandas==2.0.3
+Pyomo==6.8.2
+streamlit==1.40.1
+

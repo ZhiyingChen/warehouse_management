@@ -1,5 +1,5 @@
 ---
-title: Warehouse Management App
+title: Warehouse Management
 emoji: 🚀
 colorFrom: red
 colorTo: red
@@ -8,8 +8,9 @@ app_port: 8501
 tags:
 - streamlit
 pinned: false
-short_description: warehouse_management_app
+short_description: warehouse_management
 license: mit
+app_file: app.py
 ---
 
 # Welcome to Streamlit!
