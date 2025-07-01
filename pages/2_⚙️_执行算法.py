@@ -170,7 +170,7 @@ if st.button("🚀 运行算法"):
         )
         context = Context()
         context.config = config
-        logger = log.setup_log(config.output_folder)
+        # logger = log.setup_log(config.output_folder)
         st_time = time.time()
         try:
 
