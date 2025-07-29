@@ -1,5 +1,7 @@
 import streamlit as st
 from web import function
+from web.language_dict import APP_LANG as LANG
+
 
 if __name__ == '__main__':
     st.set_page_config(
@@ -8,14 +10,12 @@ if __name__ == '__main__':
         layout="wide"
     )
 
-    st.title("📦 仓储选址算法平台")
-    st.markdown("欢迎使用！请通过左侧导航栏选择功能页面：")
+    function.render_language_selector()
+    lang, T = function.get_language_dict("app")
 
-    st.markdown("""
-    ### 📘 页面导航说明：
-    - **项目背景**：了解问题背景
-    - **执行算法**：了解输入输出文件格式，编辑输入文件，运行算法并查看结果
-    """)
+    st.title(T["title"])
+    st.markdown(T["welcome"])
+    st.markdown(T["navigation"])
+
 
     function.render_footer()
-
