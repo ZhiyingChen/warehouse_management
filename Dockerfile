@@ -15,8 +15,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     software-properties-common \
     git \
-    glpk-utils \
-    && rm -rf /var/lib/apt/lists/*
+    glpk-utils
 
 
 # 然后复制所有代码（包括 app.py）
