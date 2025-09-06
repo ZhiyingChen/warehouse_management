@@ -13,9 +13,9 @@ RUN mkdir -p /tmp /tmp/mplcache && chmod -R 777 /tmp
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
-    software-properties-common \
     git \
-    glpk-utils
+    glpk-utils \
+ && rm -rf /var/lib/apt/lists/*
 
 
 # 然后复制所有代码（包括 app.py）
