@@ -11,10 +11,8 @@ from source.result.processor import ResultProcessor
 from source.result.dumper import ResultDumper
 from source.utils import log
 
-
 function.render_language_selector()
 lang, T = function.get_language_dict("algo")
-
 
 st.title(T["title"])
 st.markdown(T["intro"])
@@ -110,9 +108,11 @@ with st.expander(T["fulfill_doc"]):
 # 示例数据展示
 st.header(T["sample_data"])
 
+
 @st.cache_data
 def load_csv(file):
     return pd.read_csv(file)
+
 
 global_df = load_csv("data/全局参数.csv")
 demand_df = load_csv("data/需求分布.csv")
@@ -160,7 +160,6 @@ if st.button(T["run_button"]):
         config = Config(load_from_file=False)
         context = Context()
         context.config = config
-        logger = log.setup_log(config.output_folder)
         st_time = time.time()
         try:
             data_loader = DataLoader(param_file_dict={
@@ -194,4 +193,3 @@ if st.button(T["run_button"]):
             st.dataframe(df)
 
 function.render_footer()
-
