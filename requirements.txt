@@ -1,4 +1,7 @@
 matplotlib
-pandas
-Pyomo
-streamlit
+pandas~=2.2.3
+Pyomo~=6.9.2
+streamlit~=1.51.0
+requests~=2.32.3
+fastapi~=0.121.0
+pydantic~=2.12.4

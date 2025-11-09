@@ -1,15 +1,7 @@
 import streamlit as st
 import pandas as pd
-import time
 from web import function
-from web.language_dict import ALGO_LANG as LANG
-from source.context import Context
-from source.info import InputData, Config
-from source.info.data_loader import DataLoader
-from source.model import ModelManager
-from source.result.processor import ResultProcessor
-from source.result.dumper import ResultDumper
-from source.utils import log
+import requests
 
 function.render_language_selector()
 lang, T = function.get_language_dict("algo")
@@ -155,41 +147,27 @@ with st.expander(T["edit_distance"]):
         mime="text/csv"
     )
 
-if st.button(T["run_button"]):
-    with st.spinner(T["running"]):
-        config = Config(load_from_file=False)
-        context = Context()
-        context.config = config
-        st_time = time.time()
-        try:
-            data_loader = DataLoader(param_file_dict={
-                "全局参数.csv": edited_global_df,
-                "需求分布.csv": edited_demand_df,
-                "供应城市.csv": edited_supply_df,
-                "距离数据.csv": edited_distance_df
-            })
-            data_loader.generate_data(context=context)
+if st.button("运行算法"):
+    with st.spinner("正在运行优化模型..."):
+        payload = {
+            "files": {
+                "全局参数.csv": edited_global_df.to_dict(orient="records"),
+                "需求分布.csv": edited_demand_df.to_dict(orient="records"),
+                "供应城市.csv": edited_supply_df.to_dict(orient="records"),
+                "距离数据.csv": edited_distance_df.to_dict(orient="records")
+            }
+        }
+        res = requests.post("http://127.0.0.1:8000/api/run", json=payload)
+        result = res.json()
 
-            model_manager = ModelManager()
-            model_manager.create_constraints(context=context)
-            model_manager.solve_all_objectives(context=context)
-            sol_dict = model_manager.get_solution()
+        if result["success"]:
+            st.success(f"优化完成，用时 {result['runtime']} 秒")
+            for name, df_data in result["results"].items():
+                df = pd.DataFrame(df_data)
+                st.subheader(name)
+                st.dataframe(df)
+        else:
+            st.error(f"出错：{result['error']}")
 
-            result_processor = ResultProcessor(sol_dict=sol_dict)
-            result_processor.generate_results(context=context)
-
-            result_dumper = ResultDumper()
-            result_file_dict = result_dumper.generate_all_files(context=context)
-
-            st.success(T["success"].format(round(time.time() - st_time)))
-        except Exception as e:
-            st.error(T["error"].format(e))
-
-    st.markdown("---")
-    st.header(T["output_result"])
-
-    for filename, df in result_file_dict.items():
-        with st.expander("📄 {}".format(filename)):
-            st.dataframe(df)
 
 function.render_footer()
