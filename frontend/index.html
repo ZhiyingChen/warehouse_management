@@ -75,8 +75,8 @@
           <div class="hero">
             <div>
               <div class="eyebrow"><span></span> NETWORK OPTIMIZATION</div>
-              <h1>找到更优的仓网布局，<br><em>让每一次决策都有依据。</em></h1>
-              <p>在候选城市中选择最佳仓库位置，平衡运输、库存、缺货与资金成本，并清晰解释每一项优化结果。</p>
+              <h1>应该在哪里建仓，<br><em>每个仓库备多少货？</em></h1>
+              <p>面对多个需求城市和数百个候选仓库城市，模型同时决定建仓位置、库存水平和供货分配，在运输时效与仓库数量等约束下寻找总成本更低的方案。</p>
               <div class="hero-actions">
                 <button class="primary-button" id="heroRunButton" type="button">
                   开始优化
@@ -100,6 +100,44 @@
               <div class="floating-metric"><span>预计节省</span><strong>18.6%</strong><i>↗</i></div>
             </div>
           </div>
+
+          <div class="section-heading problem-heading">
+            <div><span class="section-kicker">PROBLEM DEFINITION</span><h2>这个应用解决什么问题？</h2></div>
+            <p>这是一个带容量、时效和缺货惩罚的仓库选址与供需分配问题。</p>
+          </div>
+          <article class="problem-panel">
+            <div class="problem-story">
+              <span class="problem-label">业务问题</span>
+              <h3>企业需要用有限数量的仓库，服务分布在不同城市的客户需求。</h3>
+              <p>仓库建得多，运输距离可能缩短，但库存和资金占用会增加；仓库建得少，可能导致运输成本上升、配送超时或需求无法满足。这个模型在这些相互冲突的因素之间做整体权衡，而不是逐个城市做局部选择。</p>
+            </div>
+            <div class="problem-flow" aria-label="优化问题的输入、决策与输出">
+              <div class="problem-step input-step">
+                <span class="step-number">01</span>
+                <div><small>已知条件</small><strong>需求与候选网络</strong><p>各城市需求量、候选仓库、运输距离与时间，以及各项成本参数。</p></div>
+              </div>
+              <span class="flow-arrow">→</span>
+              <div class="problem-step decision-step">
+                <span class="step-number">02</span>
+                <div><small>模型决策</small><strong>选址、备货与分配</strong><p>选择哪些城市建仓、每个仓库配置多少库存、各仓库向哪些城市供货。</p></div>
+              </div>
+              <span class="flow-arrow">→</span>
+              <div class="problem-step output-step">
+                <span class="step-number">03</span>
+                <div><small>优化结果</small><strong>成本更低的可执行方案</strong><p>输出推荐仓库、库存水平、供需分配、需求满足率和完整成本构成。</p></div>
+              </div>
+            </div>
+            <div class="model-definition-grid">
+              <div>
+                <span class="definition-icon target-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="m15 9 6-6M17 3h4v4"/></svg></span>
+                <p><small>优化目标</small><strong>最小化系统总成本</strong><span>运输成本 + 仓储成本 + 缺货成本 + 库存资金占用成本</span></p>
+              </div>
+              <div>
+                <span class="definition-icon constraint-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
+                <p><small>核心约束</small><strong>方案必须满足业务边界</strong><span>仓库数量上下限、总库存上下限、运输时间限制、库存与供货平衡</span></p>
+              </div>
+            </div>
+          </article>
 
           <div class="section-heading split-heading">
             <div><span class="section-kicker">CURRENT SCENARIO</span><h2>当前规划场景</h2></div>
