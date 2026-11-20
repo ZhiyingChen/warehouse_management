@@ -108,8 +108,24 @@
           <article class="problem-panel">
             <div class="problem-story">
               <span class="problem-label">业务问题</span>
-              <h3>企业需要用有限数量的仓库，服务分布在不同城市的客户需求。</h3>
-              <p>仓库建得多，运输距离可能缩短，但库存和资金占用会增加；仓库建得少，可能导致运输成本上升、配送超时或需求无法满足。这个模型在这些相互冲突的因素之间做整体权衡，而不是逐个城市做局部选择。</p>
+              <h3>在 368 个候选城市中，应该选择哪些城市建仓，才能服务 5 个需求城市？</h3>
+              <p>仓库建得多，运输距离可能缩短，但库存和资金占用会增加；仓库建得少，可能导致运输成本上升、配送超时或需求无法满足。模型要在 1,835 条候选运输路径上同时决定选址、备货和供货分配，而不是逐个城市做局部选择。</p>
+            </div>
+            <div class="problem-visual">
+              <div class="visual-caption"><span>NETWORK DECISION</span><strong>从候选网络到可执行仓网</strong><small>每条连线代表一条满足运输时效的候选供货关系</small></div>
+              <div class="network-flow-diagram">
+                <div class="network-column demand-column"><small>需求城市 · 5 个</small><div class="city-node"><i></i>武汉市 <b>2.415</b></div><div class="city-node"><i></i>厦门市 <b>0.526</b></div><div class="city-node faded"><i></i>成都 / 襄阳 / 赤峰 <b>0.059</b></div></div>
+                <div class="network-connector"><span></span><span></span><span></span><em>1,835 条有效路径</em></div>
+                <div class="network-column warehouse-column"><small>候选仓库 · 368 个</small><div class="warehouse-node selected"><span>WH</span><strong>建仓决策</strong><b>库存 ≤ 3 件</b></div><div class="warehouse-node ghost"><span>WH</span><strong>其他候选</strong><b>0 / 1</b></div></div>
+                <div class="network-connector reverse"><span></span><span></span><span></span><em>按需求分配库存</em></div>
+                <div class="network-column output-column"><small>优化输出</small><div class="output-node"><strong>供货分配</strong><b>满足需求</b></div><div class="output-node"><strong>成本构成</strong><b>运输 + 库存 + 缺货</b></div></div>
+              </div>
+            </div>
+            <div class="quantified-scenario">
+              <div><small>示例场景规模</small><strong>368 <em>→</em> 5</strong><span>候选仓库城市 → 需求城市</span></div>
+              <div><small>需求总量</small><strong>3.000 <em>件</em></strong><span>武汉 2.415 · 厦门 0.526 · 其他 0.059</span></div>
+              <div><small>运输可行域</small><strong>≤ 24 <em>小时</em></strong><span>仅保留满足时效限制的供货路径</span></div>
+              <div><small>仓网边界</small><strong>1–2 <em>个仓库</em></strong><span>总库存范围：3–3 件</span></div>
             </div>
             <div class="problem-flow" aria-label="优化问题的输入、决策与输出">
               <div class="problem-step input-step">
@@ -136,6 +152,10 @@
                 <span class="definition-icon constraint-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>
                 <p><small>核心约束</small><strong>方案必须满足业务边界</strong><span>仓库数量上下限、总库存上下限、运输时间限制、库存与供货平衡</span></p>
               </div>
+            </div>
+            <div class="model-interpretation">
+              <span class="interpretation-mark">MODEL READOUT</span>
+              <p><strong>模型实际回答的问题：</strong>在运输时间不超过 24 小时、仓库数量为 1–2 个、总库存为 3 件的条件下，哪些候选城市值得建仓？每个仓库应该保有多少库存？每个需求城市应该由哪个仓库供货、供货多少？</p>
             </div>
           </article>
 
