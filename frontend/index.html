@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="仓网选址优化与成本分析平台">
+  <title>仓网规划工作台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="返回概览">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40"><path d="M8 13.5 20 7l12 6.5v13L20 33 8 26.5v-13Z"/><path d="m8 13.5 12 7 12-7M20 20.5V33"/></svg>
+        </span>
+        <span><strong>Warehouse</strong><small>Network Studio</small></span>
+      </a>
+
+      <nav class="primary-nav" aria-label="主要导航">
+        <a class="nav-item active" href="#overview" data-section="overview">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+          规划概览
+        </a>
+        <a class="nav-item" href="#data" data-section="data">
+          <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+          场景数据
+        </a>
+        <a class="nav-item" href="#results" data-section="results">
+          <svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>
+          优化结果
+        </a>
+        <a class="nav-item" href="#guide" data-section="guide">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z"/><path d="M4 19.5V6.5M8 8h8M8 12h6"/></svg>
+          使用说明
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button class="connection-card" id="connectionButton" type="button">
+          <span class="status-dot" id="statusDot"></span>
+          <span><strong id="connectionTitle">API 未连接</strong><small id="connectionSubtitle">点击配置服务地址</small></span>
+          <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+        <div class="profile">
+          <span class="avatar">ZC</span>
+          <span><strong>Zhiying Chen</strong><small>Optimization Portfolio</small></span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="menuButton" aria-label="打开菜单">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div class="breadcrumb"><span>供应链规划</span><i>/</i><strong>仓网选址</strong></div>
+        <div class="topbar-actions">
+          <button class="ghost-button" id="resetButton" type="button">
+            <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            重置示例
+          </button>
+          <button class="primary-button compact" id="runTopButton" type="button">
+            <svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></svg>
+            运行优化
+          </button>
+        </div>
+      </header>
+
+      <div class="content-wrap">
+        <section class="page-section active" id="overview">
+          <div class="hero">
+            <div>
+              <div class="eyebrow"><span></span> NETWORK OPTIMIZATION</div>
+              <h1>找到更优的仓网布局，<br><em>让每一次决策都有依据。</em></h1>
+              <p>在候选城市中选择最佳仓库位置，平衡运输、库存、缺货与资金成本，并清晰解释每一项优化结果。</p>
+              <div class="hero-actions">
+                <button class="primary-button" id="heroRunButton" type="button">
+                  开始优化
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+                <button class="text-button" data-goto="data" type="button">查看场景数据</button>
+              </div>
+            </div>
+            <div class="network-visual" aria-label="仓网连接示意图">
+              <div class="visual-glow"></div>
+              <svg class="network-lines" viewBox="0 0 430 300">
+                <path d="M105 76 218 145 349 63M218 145l122 92M218 145 93 116M218 145 72 226M105 76 72 226M349 63l-9 174"/>
+                <circle cx="218" cy="145" r="5"/><circle cx="105" cy="76" r="4"/><circle cx="349" cy="63" r="4"/><circle cx="72" cy="226" r="4"/><circle cx="311" cy="261" r="4"/><circle cx="340" cy="237" r="4"/>
+              </svg>
+              <div class="node hub" style="--x:50%;--y:47%"><span><svg viewBox="0 0 24 24"><path d="M4 21V9l8-5 8 5v12M8 21v-6h8v6M8 10h.01M12 10h.01M16 10h.01"/></svg></span><small>中心仓</small></div>
+              <div class="node" style="--x:22%;--y:20%"><span>WH</span><small>候选仓</small></div>
+              <div class="node" style="--x:82%;--y:15%"><span>DC</span><small>需求点</small></div>
+              <div class="node small" style="--x:14%;--y:76%"><span></span></div>
+              <div class="node small" style="--x:72%;--y:88%"><span></span></div>
+              <div class="node small" style="--x:80%;--y:78%"><span></span></div>
+              <div class="floating-metric"><span>预计节省</span><strong>18.6%</strong><i>↗</i></div>
+            </div>
+          </div>
+
+          <div class="section-heading split-heading">
+            <div><span class="section-kicker">CURRENT SCENARIO</span><h2>当前规划场景</h2></div>
+            <span class="scenario-badge"><i></i> 示例数据已加载</span>
+          </div>
+          <div class="metric-grid scenario-metrics">
+            <article class="metric-card">
+              <span class="metric-icon violet"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-5 8 5v12M8 21v-6h8v6"/></svg></span>
+              <div><small>候选仓库城市</small><strong id="supplyCount">—</strong><span>个备选位置</span></div>
+            </article>
+            <article class="metric-card">
+              <span class="metric-icon blue"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/></svg></span>
+              <div><small>需求城市</small><strong id="demandCount">—</strong><span>个服务节点</span></div>
+            </article>
+            <article class="metric-card">
+              <span class="metric-icon amber"><svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18M5 5l14 14M19 5 5 19"/></svg></span>
+              <div><small>运输路径</small><strong id="routeCount">—</strong><span>条候选线路</span></div>
+            </article>
+            <article class="metric-card">
+              <span class="metric-icon green"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span>
+              <div><small>总需求量</small><strong id="totalDemand">—</strong><span>需求单位</span></div>
+            </article>
+          </div>
+
+          <div class="two-column-grid overview-grid">
+            <article class="panel workflow-panel">
+              <div class="panel-heading"><div><span class="section-kicker">WORKFLOW</span><h3>三步完成选址分析</h3></div></div>
+              <div class="workflow-list">
+                <button class="workflow-step" data-goto="data" type="button"><b>01</b><span><strong>准备场景数据</strong><small>上传或编辑需求、候选仓与运输距离</small></span><i>→</i></button>
+                <button class="workflow-step" data-goto="data" type="button"><b>02</b><span><strong>设置优化约束</strong><small>配置仓库数量、库存与运输时效限制</small></span><i>→</i></button>
+                <button class="workflow-step" id="workflowRunButton" type="button"><b>03</b><span><strong>运行并分析方案</strong><small>获取选址建议、成本构成与供需分配</small></span><i>→</i></button>
+              </div>
+            </article>
+            <article class="panel insight-panel">
+              <div class="panel-heading"><div><span class="section-kicker">MODEL SCOPE</span><h3>模型考虑的成本</h3></div></div>
+              <div class="cost-legend">
+                <div><span class="cost-dot purple"></span><p><strong>运输成本</strong><small>由运输距离、数量和费率共同决定</small></p></div>
+                <div><span class="cost-dot blue"></span><p><strong>仓储成本</strong><small>根据选中仓库的库存水平计算</small></p></div>
+                <div><span class="cost-dot orange"></span><p><strong>缺货成本</strong><small>对未满足的市场需求施加惩罚</small></p></div>
+                <div><span class="cost-dot green"></span><p><strong>资金成本</strong><small>衡量库存占用资金带来的成本</small></p></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="page-section" id="data">
+          <div class="page-title-row">
+            <div><span class="section-kicker">SCENARIO DATA</span><h1>场景数据</h1><p>编辑模型参数或上传自己的 CSV 文件。所有数据仅在当前浏览器和求解服务之间传递。</p></div>
+            <div class="title-actions"><button class="ghost-button" id="uploadAllButton" type="button">批量上传</button><button class="primary-button" id="runDataButton" type="button">运行优化 <span>→</span></button></div>
+          </div>
+          <input type="file" id="batchFileInput" accept=".csv" multiple hidden>
+          <div class="data-summary" id="dataSummary"></div>
+          <div class="data-tabs" role="tablist">
+            <button class="data-tab active" data-table="global" role="tab">全局参数 <span id="globalRows">0</span></button>
+            <button class="data-tab" data-table="demand" role="tab">需求分布 <span id="demandRows">0</span></button>
+            <button class="data-tab" data-table="supply" role="tab">候选仓库 <span id="supplyRows">0</span></button>
+            <button class="data-tab" data-table="distance" role="tab">距离数据 <span id="distanceRows">0</span></button>
+          </div>
+          <article class="panel table-panel">
+            <div class="table-toolbar">
+              <div><h3 id="tableTitle">全局参数</h3><p id="tableDescription">设置模型成本、仓库数量、库存与时效约束</p></div>
+              <div class="toolbar-actions">
+                <label class="search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="tableSearch" placeholder="搜索当前表格"></label>
+                <button class="ghost-button small" id="uploadTableButton" type="button">上传 CSV</button>
+                <input type="file" id="tableFileInput" accept=".csv" hidden>
+                <button class="ghost-button small" id="addRowButton" type="button">＋ 添加行</button>
+              </div>
+            </div>
+            <div class="table-wrap"><table class="data-table" id="editorTable"></table></div>
+            <div class="table-footer"><span id="tableCount">共 0 条数据</span><span>单击单元格即可编辑</span></div>
+          </article>
+        </section>
+
+        <section class="page-section" id="results">
+          <div class="page-title-row">
+            <div><span class="section-kicker">OPTIMIZATION RESULTS</span><h1>优化结果</h1><p id="resultSubtitle">运行模型后，这里将展示推荐方案与成本分析。</p></div>
+            <div class="title-actions"><button class="ghost-button" id="exportButton" type="button" disabled>导出结果</button><button class="primary-button" id="rerunButton" type="button">重新运行 <span>↻</span></button></div>
+          </div>
+          <div class="empty-state" id="emptyResults">
+            <div class="empty-graphic"><svg viewBox="0 0 80 80"><path d="M15 62V32l25-14 25 14v30M26 62V44h28v18M32 33h.1M40 33h.1M48 33h.1"/></svg></div>
+            <h2>等待生成优化方案</h2><p>当前场景数据已准备好，运行模型即可查看仓库选址、成本构成和供需分配。</p>
+            <button class="primary-button" id="emptyRunButton" type="button">运行优化 <span>→</span></button>
+          </div>
+          <div class="results-content" id="resultsContent" hidden>
+            <div class="metric-grid result-metrics" id="resultMetrics"></div>
+            <div class="two-column-grid result-charts">
+              <article class="panel"><div class="panel-heading"><div><span class="section-kicker">COST BREAKDOWN</span><h3>成本构成</h3></div><strong id="totalCostLabel"></strong></div><div class="donut-area"><div class="donut-chart" id="costDonut"><span></span></div><div class="donut-legend" id="costLegend"></div></div></article>
+              <article class="panel"><div class="panel-heading"><div><span class="section-kicker">WAREHOUSE PLAN</span><h3>推荐仓库与库存</h3></div><span class="scenario-badge"><i></i><b id="warehouseCount">0</b> 个仓库</span></div><div class="bar-chart" id="warehouseChart"></div></article>
+            </div>
+            <article class="panel result-table-panel"><div class="panel-heading"><div><span class="section-kicker">ALLOCATION DETAILS</span><h3>供需分配明细</h3></div><div class="result-tabs"><button class="active" data-result-table="warehouse">仓库方案</button><button data-result-table="demand">需求满足</button></div></div><div class="table-wrap"><table class="data-table" id="resultTable"></table></div></article>
+          </div>
+        </section>
+
+        <section class="page-section" id="guide">
+          <div class="page-title-row"><div><span class="section-kicker">USER GUIDE</span><h1>使用说明</h1><p>了解输入数据要求、求解流程与部署配置。</p></div></div>
+          <div class="guide-grid">
+            <article class="panel guide-card"><span>01</span><h3>准备四类数据</h3><p>全局参数、需求分布、候选仓库和距离数据共同构成一个完整场景。可以直接编辑示例，也可以上传同名 CSV。</p></article>
+            <article class="panel guide-card"><span>02</span><h3>连接求解服务</h3><p>点击左下角 API 状态，填写 FastAPI 服务地址。本地开发默认使用 <code>http://127.0.0.1:8000</code>。</p></article>
+            <article class="panel guide-card"><span>03</span><h3>运行与导出</h3><p>模型完成后会展示 KPI、成本结构、仓库库存和城市满足情况，并支持将结果导出为 CSV。</p></article>
+          </div>
+          <article class="panel schema-panel"><div class="panel-heading"><div><span class="section-kicker">DATA SCHEMA</span><h3>CSV 字段要求</h3></div></div><div class="schema-list"><div><strong>全局参数.csv</strong><code>名称, 单位, 数量</code></div><div><strong>需求分布.csv</strong><code>城市, 需求量</code></div><div><strong>供应城市.csv</strong><code>城市</code></div><div><strong>距离数据.csv</strong><code>城市1, 城市2, 距离（公里）, 时间（小时）</code></div></div></article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="apiModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="apiModalTitle">
+      <button class="modal-close" id="closeApiModal" aria-label="关闭">×</button>
+      <span class="modal-icon"><svg viewBox="0 0 24 24"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="9"/></svg></span>
+      <h2 id="apiModalTitle">连接求解服务</h2>
+      <p>填写 FastAPI 服务根地址，页面会调用 <code>/api/run</code> 执行优化。</p>
+      <label class="field-label">API 地址<input id="apiUrlInput" type="url" placeholder="http://127.0.0.1:8000"></label>
+      <div class="modal-actions"><button class="ghost-button" id="testApiButton" type="button">测试连接</button><button class="primary-button" id="saveApiButton" type="button">保存配置</button></div>
+      <small class="modal-message" id="apiMessage"></small>
+    </div>
+  </div>
+
+  <div class="run-overlay" id="runOverlay" hidden>
+    <div class="run-dialog"><div class="solver-animation"><span></span><span></span><span></span></div><h2>正在计算更优方案</h2><p id="runStatus">正在校验场景数据...</p><div class="progress-track"><i id="runProgress"></i></div><small>请保持页面打开，求解时间取决于数据规模</small></div>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

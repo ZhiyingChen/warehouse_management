@@ -1,4 +1,5 @@
 import time
+
 from source.context import Context
 from source.info import Config
 from source.info.data_loader import DataLoader
@@ -27,10 +28,13 @@ def run_algorithm(input_files: dict):
         result_processor.generate_results(context=context)
 
         result_dumper = ResultDumper()
-        result_file_dict = result_dumper.generate_all_files(context=context)
+        result_file_dict = {
+            file_name: data_frame.to_dict(orient="records")
+            for file_name, data_frame in result_dumper.generate_all_files(context=context).items()
+        }
 
         runtime = round(time.time() - st_time, 2)
 
         return {"success": True, "runtime": runtime, "results": result_file_dict}
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+    except Exception as error:
+        return {"success": False, "error": str(error)}

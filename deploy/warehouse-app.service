@@ -1,0 +1,15 @@
+[Unit]
+Description=Warehouse Management Optimization App
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/warehouse_management_app
+Environment=PYTHONUNBUFFERED=1
+Environment=ALLOWED_ORIGINS=https://zhiying.github.io
+ExecStart=/opt/warehouse_management_app/.venv/bin/uvicorn fast_api.main:app --host 0.0.0.0 --port 8090
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
