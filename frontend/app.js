@@ -12,8 +12,9 @@ const TABLE_META = {
   distance: { title: "距离数据", description: "维护需求城市到候选仓库之间的距离和运输时间", columns: ["城市1", "城市2", "距离（公里）", "时间（小时）"] }
 };
 
+const deploymentBasePath = window.location.pathname.startsWith("/warehouse") ? "/warehouse" : "";
 const defaultApiUrl = window.location.hostname && !["127.0.0.1", "localhost"].includes(window.location.hostname)
-  ? `${window.location.protocol}//${window.location.hostname}`
+  ? `${window.location.origin}${deploymentBasePath}`
   : "http://127.0.0.1:8000";
 
 const state = {
@@ -90,7 +91,7 @@ function navigate(section) {
 async function loadSampleData() {
   const entries = Object.entries(FILE_NAMES);
   const loaded = await Promise.all(entries.map(async ([key, fileName]) => {
-    const response = await fetch(`data/${encodeURIComponent(fileName)}`);
+    const response = await fetch(`${deploymentBasePath}/data/${encodeURIComponent(fileName)}`);
     if (!response.ok) throw new Error(`无法读取 ${fileName}`);
     return [key, parseCSV(await response.text())];
   }));
